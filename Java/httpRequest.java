@@ -1,12 +1,14 @@
+        //ç”¨httpæ–¹å¼å‘é€JsonæŠ¥æ–‡
+        public JSONObject sendHttpRequest(){   
             String resp= null;
             JSONObject obj = new JSONObject();
-            obj.put("name", "ÕÅÈı");   
+            obj.put("name", "å¼ ä¸‰");   
             obj.put("age", "18");   
             String query = obj.toString();
-            log.info("·¢ËÍµ½URLµÄ±¨ÎÄÎª£º");
+            log.info("å‘é€åˆ°URLçš„æŠ¥æ–‡ä¸ºï¼š");
             log.info(query);
             try {
-                URL url = new URL("http://127.0.0.1:8888"); //urlµØÖ·
+                URL url = new URL("http://127.0.0.1:8888"); //urlåœ°å€
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
@@ -29,7 +31,7 @@
                         lines = new String(lines.getBytes(), "utf-8");
                         sbf.append(lines);
                     }
-                    log.info("·µ»ØÀ´µÄ±¨ÎÄ£º"+sbf.toString());
+                    log.info("è¿”å›æ¥çš„æŠ¥æ–‡ï¼š"+sbf.toString());
                     resp = sbf.toString();    
                    
                 }
@@ -40,3 +42,4 @@
             }finally{
                 JSONObject json = (JSONObject)JSON.parse(resp);
             }
+        }
