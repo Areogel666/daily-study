@@ -1,0 +1,18 @@
+--1.使用示例及注意事项
+    --注意：EXISTS()中只判断是否存在这条数据，和查出什么无关；IN()中则需要查询得到具体某一列数据。
+    --    相对应，NOT EXISTS()取所有条件不存在的数据；NOT IN()则需要查询条件不能存在null，且查询结果不包括查询字段为null的数据（具体示例请见下面sql）
+    --IN, EXISTS示例，以下两条sql结果等价
+        SELECT t.*, t.rowid FROM oa_elec_equip_info t WHERE t.equip_code IN (SELECT tt.equip_code FROM oa_elec_equip_rebo_info tt);
+        SELECT t.*, t.rowid FROM oa_elec_equip_info t WHERE EXISTS (SELECT 1 FROM oa_elec_equip_rebo_info tt WHERE tt.equip_code=t.equip_code);
+    --NOT IN, NOT EXISTS示例，以下两条sql结果等价
+        SELECT t.*, t.rowid FROM oa_elec_equip_info t WHERE t.equip_code NOT IN (SELECT tt.equip_code FROM oa_elec_equip_rebo_info tt WHERE tt.equip_code IS NOT NULL )
+        UNION ALL
+        SELECT t.*, t.rowid FROM oa_elec_equip_info t WHERE t.equip_code IS NULL;
+        SELECT t.*, t.rowid FROM oa_elec_equip_info t WHERE NOT EXISTS (SELECT 1 FROM oa_elec_equip_rebo_info tt WHERE tt.equip_code=t.equip_code);
+--2.关于效率比较
+    1) select * from T1 where exists(select 1 from T2 where T1.a=T2.a) ;
+    T1数据量小而T2数据量非常大时，T1<<T2 时，1) 的查询效率高。
+    原理：EXISTS执行T2.LENGTH次查询T2表，返回结果为true的数据。相当于执行T1表数据量次数的sql
+    2) select * from T1 where T1.a in (select T2.a from T2) ;
+    T1数据量非常大而T2数据量小时，T1>>T2 时，2) 的查询效率高。
+    原理：IN关键字首先遍历T1表，将结果存储在临时表中，然后遍历T2表，最后比较两表数据是否相等，返回相等数据。相当于两层for循环遍历
