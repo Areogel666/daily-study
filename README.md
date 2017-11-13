@@ -1,4 +1,4 @@
 # daily-study
-Record knowledge everyday, especial about programming code
+>Record knowledge everyday, especial about programming code
 
-日常学习库（Java-系统）
+*编程语言日常学习及个人代码库*  :sparkles::sparkles:
