@@ -1,4 +1,4 @@
-package com.pqsoft.util;
+package *;
 
 import java.math.BigDecimal;
 import java.util.List;
