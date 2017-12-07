@@ -1,4 +1,4 @@
-package com.pqsoft.util;
+package *;
 
 import java.io.Reader;
 import java.sql.Clob;
