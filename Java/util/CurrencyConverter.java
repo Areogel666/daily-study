@@ -171,7 +171,6 @@ public class CurrencyConverter {
 	 
 	/**
 	 * 数字转换成大写汉字
-	 * author 戴张军
 	 * @return
 	 */
 	
@@ -181,7 +180,6 @@ public class CurrencyConverter {
       
     /** 
      * 数字转换成大写汉字
-	 * author 戴张军
      */  
     public static String getDecimalStr(double d){  
         String str = new BigDecimal(d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();  
@@ -308,7 +306,6 @@ public class CurrencyConverter {
 	
     /** 
      * 数字转换成大写汉字
-	 * author 戴张军
      */  
     public static String transformToCaps(double d){
     	String s1 = getDecimalStr(d);
