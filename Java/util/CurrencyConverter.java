@@ -1,7 +1,11 @@
 package *
 
 import java.util.HashMap;
-
+/**
+ * 注：经性能测试，第二种方法效率更高，在多次循环使用时更甚。具体参数如下(循环1000次)：
+ * method 1 执行耗时 : 0.088 秒 壹佰贰拾叁万肆仟伍佰元伍角陆分
+ * method 2 执行耗时 : 0.026 秒 壹佰贰拾叁万肆仟伍佰圆陆角陆分
+ */
 public class CurrencyConverter {
 	/*------------------------------------------- 方法一---------------------------------------------*/
 	static HashMap<Integer, String> hm = new HashMap<Integer, String>();
