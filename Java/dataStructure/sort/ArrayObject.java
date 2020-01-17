@@ -114,6 +114,39 @@ public class ArrayObject<T> implements Cloneable{
 	}
 
 	/**
+	 * 交换两个成员
+	 */
+	public void swap(int key1, int key2) {
+		if (key1 < 0 || key1 >= nElems) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		if (key2 < 0 || key2 >= nElems) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		T temp = arr[key1];
+		arr[key1] = arr[key2];
+		arr[key2] = temp;
+	}
+
+	/**
+	 * 比较大小
+	 */
+	protected int compare(T t1, T t2) {
+		if (t1 instanceof Integer && t2 instanceof Integer) {
+			int num1 = (Integer) t1;
+			int num2 = (Integer) t2;
+			if (num1 > num2) {
+				return 1;
+			} else if (num1 == num2) {
+				return 0;
+			} else {
+				return -1;
+			}
+		}
+		return 999;
+	}
+	
+	/**
 	 * 冒泡排序
 	 * <p>两两比较，两两交换，一次循环得到极值</p>
 	 */
@@ -177,35 +210,86 @@ public class ArrayObject<T> implements Cloneable{
 	}
 	
 	/**
-	 * 交换两个成员
+	 * 归并排序
+	 * <p>将数组拆成两部分，分别排序，然后合并成为一个有序数组，不断递归直到拆分的数组只剩一个数据项</p>
 	 */
-	public void swap(int key1, int key2) {
-		if (key1 < 0 || key1 >= nElems) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		if (key2 < 0 || key2 >= nElems) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		T temp = arr[key1];
-		arr[key1] = arr[key2];
-		arr[key2] = temp;
+	public void mergeSort() {
+		T[] workSpace = (T[]) new Object[nElems];
+		recMergeSort(workSpace, 0, nElems - 1);
 	}
-
+	
 	/**
-	 * 比较大小
+	 * 递归排序数组
+	 * @param lowerBound 
+	 * @param upperBound 
+	 * @param workSpace 空数组，用于排序操作
 	 */
-	protected int compare(T t1, T t2) {
-		if (t1 instanceof Integer && t2 instanceof Integer) {
-			int num1 = (Integer) t1;
-			int num2 = (Integer) t2;
-			if (num1 > num2) {
-				return 1;
-			} else if (num1 == num2) {
-				return 0;
+	private void recMergeSort(T[] workSpace, int lowerBound, int upperBound) {
+		if (lowerBound == upperBound) { 
+			return;
+		} else {
+			int mid = (lowerBound + upperBound) / 2;
+			recMergeSort(workSpace, lowerBound, mid);
+			recMergeSort(workSpace, mid + 1, upperBound);
+			merge(workSpace, lowerBound, mid + 1, upperBound);
+		}
+	}
+	
+	/**
+	 * 合并排序两个有序数组
+	 * @param workSpace
+	 * @param lowPtr 第一个数组index
+	 * @param highPtr 第二个数组index
+	 * @param upperBound
+	 */
+	private void merge(T[] workSpace, int lowPtr, int highPtr, int upperBound) {
+		int workPtr = 0; // workSpace index
+		int lowerBound = lowPtr;
+		int mid = highPtr - 1;
+		while (lowPtr <= mid && highPtr <= upperBound) {
+			if (compare(arr[lowPtr], arr[highPtr]) <= 0) {
+				workSpace[workPtr++] = arr[lowPtr++];
 			} else {
-				return -1;
+				workSpace[workPtr++] = arr[highPtr++];
 			}
 		}
-		return 999;
+		while (lowPtr <= mid) {
+			workSpace[workPtr++] = arr[lowPtr++];
+		}
+		while (highPtr <= upperBound) {
+			workSpace[workPtr++] = arr[highPtr++];
+		}
+		// 将工作组数赋值给arr
+		for (int i = 0; i < upperBound - lowerBound + 1; i++) {
+			arr[lowerBound + i] = workSpace[i];
+		}
+	}
+	
+	/**
+	 * 希尔排序
+	 * <p>加大间隔做插入排序</p>
+	 * 比较顺序：(n=6) 4<->0 5<->1 6<->2; 1<->0 2<->1<->0 ... 6<->5<->4<->3<->2<->1<->0
+	 */
+	public void shellSort() {
+		int inner, outer;
+		T temp;
+		// 间隔序列  1, 4, 13, 40, 121, 364...
+		int h = 1;
+		while (h < nElems / 3) {
+			h = 3 * h + 1;
+		}
+		// 按间隔序列循环排序
+		while (h >= 1) {
+			for (outer = h; outer < nElems; outer++) {
+				temp = arr[outer];
+				inner = outer;
+				while (inner > h - 1 && compare(arr[inner - h], temp) > 0) {
+					arr[inner] = arr[inner - h];
+					inner -= h;
+				}
+				arr[inner] = temp;
+			}
+			h = (h - 1) / 3;
+		}
 	}
 }

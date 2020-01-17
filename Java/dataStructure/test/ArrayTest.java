@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 public class ArrayTest {
 
 	@Test
+	@Ignore
 	public void testRandomSort() throws CloneNotSupportedException {
 //		Integer[] array = { 4, 2, 325, 23, 435, 65, 234, 28, 3, 39, 64 };
 		int count = 40000;
@@ -70,6 +71,21 @@ public class ArrayTest {
 		
 	}
 
+	@Test
+	public void testShellSort() {
+		int maxSize = 20;
+		ArrayObject <Integer> arr = new ArrayObject<>(maxSize);
+		for (int i = 0; i < maxSize; i++) {
+			int n = (int) (Math.random() * 99);
+			arr.insert(n);
+		}
+		arr.display();
+		System.out.println("=====ShellSort=====");
+		arr.shellSort();
+		arr.display();
+	}
+	
+	
 	private void randomIntegerArray(Integer[] array) {
 		Random random = new Random();
 		for (int i = 0; i < array.length; i++) {
