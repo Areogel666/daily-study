@@ -1,3 +1,4 @@
+package cn.lxr.util.baseUtil;
         //用http方式发送Json报文
         public JSONObject sendHttpRequest(){   
             String resp= null;

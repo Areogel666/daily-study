@@ -1,4 +1,5 @@
-﻿
+﻿package cn.lxr.app.springbootDemo;
+
 /***
  * 本地测试 MQ队列提供者
  */
