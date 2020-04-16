@@ -1,6 +1,6 @@
 ﻿package cn.lxr.app.itextPDF.config;
 
-import cn.lxr.itextPDF.entity.DocumentSetting;
+import cn.lxr.app.itextPDF.entity.DocumentSetting;
 
 public class EContractParam {
 	/*=========================文件设置===========================*/
