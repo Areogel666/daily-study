@@ -292,4 +292,133 @@ public class ArrayObject<T> implements Cloneable{
 			h = (h - 1) / 3;
 		}
 	}
+	
+	/**
+	 * 划分
+	 * <p>把数据按照特定值分为两组</p>
+	 */
+	public int partitionIt(int left, int right, T pivot) {
+		int leftPtr = left - 1;
+		int rightPtr = right;
+		while (true) {
+			while (leftPtr < right && compare(arr[++leftPtr], pivot) < 0) {
+				; // 左边小于pivot时不操作，最终存储第一个需要交换的leftPtr
+			}
+			while (rightPtr > left && compare(arr[--rightPtr], pivot) > 0) {
+				; // 右边大于pivot时不操作，最终存储第一个需要交换的rightPtr
+			}
+			if (leftPtr >= rightPtr) {
+				break;
+			} else {
+				swap(leftPtr, rightPtr);
+			}
+		}
+		swap(leftPtr, right); // 这一步对于划分本身是不用的，但是快排时需要将枢纽swap到排序好的位置上
+		return leftPtr;
+	}
+	
+	/**
+	 * 快速排序
+	 * <p>把数据递归划分，每次划分将枢纽swap到排序好的位置</p>
+	 */
+	public void quickSort() {
+		recQuickSort(0, nElems - 1);
+	}
+
+	/**
+	 * 快速排序递归方法
+	 * @param left
+	 * @param right
+	 */
+	private void recQuickSort(int left, int right) {
+		if (right <= left) {
+			return;
+		} else {
+			T pivot = arr[right];
+			int partition = partitionIt(left, right, pivot);
+			recQuickSort(left, partition - 1);
+			recQuickSort(partition + 1, right);
+		}
+	}
+	/**
+	 * 快速排序（加入三数据取中）
+	 * <p>把数据递归划分，每次划分将枢纽swap到排序好的位置</p>
+	 */
+	public void quickSort1() {
+		recQuickSort1(0, nElems - 1);
+	}
+	
+	/**
+	 * 快速排序递归方法
+	 * @param left
+	 * @param right
+	 */
+	private void recQuickSort1(int left, int right) {
+		int size = right - left + 1;
+		if (size < 10) { // 小于10个数据，使用插入排序
+			insertionSort(left, right);
+		} else {
+			T median = medianOf3(left, right);
+			int partition = partitionIt1(left, right, median);
+			recQuickSort1(left, partition - 1);
+			recQuickSort1(partition + 1, right);
+		}
+	}
+	
+	/**
+	 * 划分
+	 * <p>把数据按照特定值分为两组</p>
+	 */
+	public int partitionIt1(int left, int right, T pivot) {
+		int leftPtr = left;
+		int rightPtr = right - 1;
+		while (true) {
+			while (compare(arr[++leftPtr], pivot) < 0) {
+				; // 左边小于pivot时不操作，最终存储第一个需要交换的leftPtr
+			}
+			while (compare(arr[--rightPtr], pivot) > 0) {
+				; // 右边大于pivot时不操作，最终存储第一个需要交换的rightPtr
+			}
+			if (leftPtr >= rightPtr) {
+				break;
+			} else {
+				swap(leftPtr, rightPtr);
+			}
+		}
+		swap(leftPtr, right - 1); // 这一步对于划分本身是不用的，但是快排时需要将枢纽swap到排序好的位置上
+		return leftPtr;
+	}
+	
+	
+	/**
+	 * 三数据取中（尽量选择中值作为枢纽）
+	 * @return
+	 */
+	private T medianOf3(int left, int right) {
+		int center = (left + right) / 2;
+		if (compare(arr[left], arr[center]) > 0) {
+			swap(left, center);
+		}
+		if (compare(arr[left], arr[right]) > 0) {
+			swap(left, right);
+		}
+		if (compare(arr[center], arr[right]) > 0) {
+			swap(center, right);
+		}
+		swap(center, right - 1);
+		return arr[right - 1];
+	}
+	
+	private void insertionSort(int left, int right) {
+		int in, out;
+		for (out = left + 1; out <= right; out++) {
+			T temp = arr[out];
+			in = out;
+			while (in > left && compare(arr[in - 1], temp) >= 0) {
+				arr[in] = arr[in - 1];
+				--in;
+			}
+			arr[in] = temp;
+		}
+	}
 }

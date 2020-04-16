@@ -72,6 +72,7 @@ public class ArrayTest {
 	}
 
 	@Test
+	@Ignore
 	public void testShellSort() {
 		int maxSize = 20;
 		ArrayObject <Integer> arr = new ArrayObject<>(maxSize);
@@ -82,6 +83,21 @@ public class ArrayTest {
 		arr.display();
 		System.out.println("=====ShellSort=====");
 		arr.shellSort();
+		arr.display();
+	}
+	
+	@Test
+	public void testQuickSort() {
+		int maxSize = 20;
+		ArrayObject <Integer> arr = new ArrayObject<>(maxSize);
+		for (int i = 0; i < maxSize; i++) {
+			int n = (int) (Math.random() * 99);
+			arr.insert(n);
+		}
+		arr.display();
+		System.out.println("=====QuickSort=====");
+//		arr.quickSort();
+		arr.quickSort1();
 		arr.display();
 	}
 	
